@@ -1,15 +1,47 @@
-import React, { Component } from "react";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 
-export class Friends extends Component {
-  render() {
-    return (
-      <div>
-        <p>Name: {this.props.friend.name}</p>
-        <p>Age: {this.props.friend.age}</p>
-        <p>Email: {this.props.friend.email}</p>
-      </div>
-    );
+const useStyles = makeStyles({
+  card: {
+    minWidth: 275,
+    border: "1px solid black"
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)"
+  },
+  title: {
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
   }
-}
+});
 
-export default Friends;
+export default function Friends(props) {
+  const classes = useStyles();
+
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography variant="h5" component="h2">
+          Name: {props.friend.name}
+        </Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          Age: {props.friend.age}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Email: {props.friend.email}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <h4>Dude... These cards are sweet</h4>
+      </CardActions>
+    </Card>
+  );
+}
