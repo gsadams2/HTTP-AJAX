@@ -1,32 +1,30 @@
 import React, { Component } from "react";
 
-export class FriendForm extends Component {
+export class UpdateForm extends Component {
   state = {
-    item: {
-      id: "",
-      name: "",
-      age: "",
-      email: ""
+    age: 0,
+    name: "",
+    email: ""
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setState({
+        age: this.props.activeFriend.age,
+        name: this.props.activeFriend.name,
+        email: this.props.activeFriend.email
+      });
     }
+  }
+
+  handleSubmit = ev => {
+    ev.preventDefault();
+    this.props.updateItem(this.state);
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.postFriend(this.state.item);
+  changeHandler = ev => {
     this.setState({
-      item: {
-        name: "",
-        age: "",
-        email: ""
-      }
-    });
-  };
-
-  changeHandler = e => {
-    this.setState({
-      item: {
-        [e.target.name]: e.target.value
-      }
+      [ev.target.name]: ev.target.value
     });
   };
 
@@ -38,7 +36,7 @@ export class FriendForm extends Component {
             type="text"
             name="name"
             placeholder="Name"
-            value={this.state.item.name}
+            value={this.state.name}
             onChange={this.changeHandler}
           />
           <br />
@@ -46,7 +44,7 @@ export class FriendForm extends Component {
             type="text"
             name="age"
             placeholder="Age"
-            value={this.state.item.age}
+            value={this.state.age}
             onChange={this.changeHandler}
           />
           <br />
@@ -54,14 +52,14 @@ export class FriendForm extends Component {
             type="email"
             name="email"
             placeholder="Email"
-            value={this.state.item.email}
+            value={this.state.email}
             onChange={this.changeHandler}
           />
-          <button onClick={this.handleSubmit}>Submit</button>
+          <button onClick={this.handleSubmit}>Update Form</button>
         </form>
       </div>
     );
   }
 }
 
-export default FriendForm;
+export default UpdateForm;

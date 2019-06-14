@@ -6,7 +6,13 @@ export class FriendList extends Component {
     return (
       <div>
         {this.props.list.map(friend => (
-          <Friends friend={friend} key={friend.id} />
+          <Friends
+            friend={friend}
+            okay={this.props.list}
+            setUpdateForm={this.props.setUpdateForm}
+            activeFriend={this.props.activeFriend}
+            key={friend.id}
+          />
         ))}
       </div>
     );

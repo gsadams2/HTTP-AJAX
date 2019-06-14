@@ -8,7 +8,8 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles({
   card: {
     minWidth: 275,
-    border: "1px solid black"
+    border: "2px solid black",
+    width: "60px"
   },
   bullet: {
     display: "inline-block",
@@ -25,6 +26,9 @@ const useStyles = makeStyles({
 
 export default function Friends(props) {
   const classes = useStyles();
+  // let itemYo = props.okay.find(
+  //   thing => `${thing.id}` === props.match.params.id
+  // );
 
   return (
     <Card className={classes.card}>
@@ -42,6 +46,7 @@ export default function Friends(props) {
       <CardActions>
         <h4>Dude... These cards are sweet</h4>
       </CardActions>
+      <button onClick={e => props.setUpdateForm(e, props.friend)}>Edit</button>
     </Card>
   );
 }
