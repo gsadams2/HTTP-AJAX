@@ -4,20 +4,13 @@ import FriendList from "./components/FriendList";
 import "./App.css";
 import axios from "axios";
 import FriendForm from "./components/FriendForm";
-import UpdateForm from "./components/UpdateForm";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      friends: [],
-      activeFriend: {
-        age: "",
-        name: "",
-        email: ""
-      }
-    };
-  }
+  state = {
+    friends: [],
+    error: "",
+    activeFriend: null
+  };
 
   componentDidMount() {
     axios
@@ -31,9 +24,10 @@ class App extends Component {
     // this.setState({ error: err.response.message });
   }
 
-  postFriend = item => {
+  addFriend = (e, friend) => {
+    e.preventDefault();
     axios
-      .post("http://localhost:5000/friends", item)
+      .post("http://localhost:5000/friends", friend)
       .then(res => {
         console.log(res);
         this.setState({
@@ -45,14 +39,31 @@ class App extends Component {
       });
   };
 
-  setUpdateForm = (ev, item) => {
-    ev.preventDefault();
-    this.setState({ activeFriend: item });
+  updateFriend = (e, friend) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:5000/friends/${friend.id}`, friend)
+      .then(res => {
+        this.setState({
+          friends: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
-  updateItem = item => {
+  setUpdateForm = (e, friend) => {
+    e.preventDefault();
+    this.setState({
+      activeFriend: friend
+    });
+  };
+
+  deleteFriend = (e, id) => {
+    e.preventDefault();
     axios
-      .put(`http://localhost:5000/friends/${item.id}`, item)
+      .delete(`http://localhost:5000/friends/${id}`)
       .then(res => {
         this.setState({
           friends: res.data
@@ -70,10 +81,11 @@ class App extends Component {
         <FriendList
           list={this.state.friends}
           setUpdateForm={this.setUpdateForm}
+          deleteFriend={this.deleteFriend}
         />
-        <FriendForm postFriend={this.postFriend} />
-        <UpdateForm
-          updateItem={this.updateItem}
+        <FriendForm
+          addFriend={this.addFriend}
+          updateFriend={this.updateFriend}
           activeFriend={this.state.activeFriend}
         />
       </div>

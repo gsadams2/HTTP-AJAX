@@ -1,44 +1,72 @@
 import React, { Component } from "react";
 
 export class FriendForm extends Component {
-  state = {
-    item: {
-      id: "",
-      name: "",
-      age: "",
-      email: ""
-    }
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.postFriend(this.state.item);
-    this.setState({
-      item: {
+  constructor(props) {
+    super(props);
+    this.state = {
+      friend: this.props.activeFriend || {
         name: "",
         age: "",
-        email: ""
-      }
+        email: "",
+        id: 0
+      },
+      active: false
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.activeFriend &&
+      prevProps.activeFriend !== this.props.activeFriend
+    ) {
+      this.setState({ friend: this.props.activeFriend, active: true });
+    }
+  }
+
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   this.props.postFriend(this.state);
+  //   this.setState({
+  //     id: "",
+  //     name: "",
+  //     age: "",
+  //     email: ""
+  //   });
+  // };
+
+  submitHandler = (e, friend) => {
+    if (this.state.active) {
+      this.props.updateFriend(e, this.state.friend);
+    } else {
+      this.props.addFriend(e, this.state.friend);
+    }
+    this.setState({
+      friend: {
+        name: "",
+        age: "",
+        email: "",
+        id: 0
+      },
+      avtive: false
     });
   };
 
   changeHandler = e => {
-    this.setState({
-      item: {
-        [e.target.name]: e.target.value
-      }
-    });
+    e.persist();
+    this.setState(prevState => ({
+      friend: { ...prevState.friend, [e.target.name]: e.target.value }
+    }));
   };
 
   render() {
     return (
       <div>
-        <form>
+        <form onSubmit={this.submitHandler}>
           <input
             type="text"
             name="name"
             placeholder="Name"
-            value={this.state.item.name}
+            value={this.state.name}
             onChange={this.changeHandler}
           />
           <br />
@@ -46,7 +74,7 @@ export class FriendForm extends Component {
             type="text"
             name="age"
             placeholder="Age"
-            value={this.state.item.age}
+            value={this.state.age}
             onChange={this.changeHandler}
           />
           <br />
@@ -54,10 +82,12 @@ export class FriendForm extends Component {
             type="email"
             name="email"
             placeholder="Email"
-            value={this.state.item.email}
+            value={this.state.email}
             onChange={this.changeHandler}
           />
-          <button onClick={this.handleSubmit}>Submit</button>
+          <button onClick={this.submitHandler}>
+            {`${this.state.active ? "Update" : "Add Friend"}`}
+          </button>
         </form>
       </div>
     );
