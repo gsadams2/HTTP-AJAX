@@ -8,10 +8,10 @@ export class FriendList extends Component {
         {this.props.list.map(friend => (
           <Friends
             friend={friend}
-            okay={this.props.list}
+            history={this.props.history}
             setUpdateForm={this.props.setUpdateForm}
-            activeFriend={this.props.activeFriend}
             key={friend.id}
+            deleteFriend={this.props.deleteFriend}
           />
         ))}
       </div>

@@ -26,9 +26,12 @@ const useStyles = makeStyles({
 
 export default function Friends(props) {
   const classes = useStyles();
-  // let itemYo = props.okay.find(
-  //   thing => `${thing.id}` === props.match.params.id
-  // );
+
+  // const setUpdateForm = e => {
+  //   e.preventDefault();
+  //   props.setUpdateForm(props.friend);
+  //   // props.history.push("/update-form");
+  // };
 
   return (
     <Card className={classes.card}>
@@ -47,6 +50,9 @@ export default function Friends(props) {
         <h4>Dude... These cards are sweet</h4>
       </CardActions>
       <button onClick={e => props.setUpdateForm(e, props.friend)}>Edit</button>
+      <button onClick={e => props.deleteFriend(e, props.friend.id)}>
+        Delete
+      </button>
     </Card>
   );
 }
